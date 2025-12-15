@@ -7,29 +7,19 @@ Original file is located at
     https://colab.research.google.com/drive/1UwOO0lg0xWIDwc0yGX2iBVUQQxgXUxYG
 """
 
-# CAC Analyzer
-# Beginner-friendly Python project for Business Analytics
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# -----------------------------
-# Step 1: Load Data
-# -----------------------------
 data = pd.read_excel("CAC_Data.xlsx")
 
-# Display the dataset
+
 print("=== Raw Data ===")
 print(data)
 
-# -----------------------------
-# Step 2: Calculate CAC
-# -----------------------------
-# CAC per channel
+
 data['CAC ($)'] = data['Spend ($)'] / data['New_Customers']
 
-# Overall CAC
 total_spend = data['Spend ($)'].sum()
 total_customers = data['New_Customers'].sum()
 overall_cac = total_spend / total_customers
@@ -38,16 +28,12 @@ print("\n=== CAC Analysis ===")
 print(data[['Channel', 'CAC ($)']])
 print(f"\nOverall CAC: ${overall_cac:.2f}")
 
-# Identify channel with lowest CAC
+
 best_channel = data.loc[data['CAC ($)'].idxmin(), 'Channel']
 print(f"Most cost-effective channel: {best_channel}")
 
-# -----------------------------
-# Step 3: Visualize CAC
-# -----------------------------
 sns.set_style("whitegrid")
 
-# Bar chart: CAC per channel
 plt.figure(figsize=(8,5))
 sns.barplot(x='Channel', y='CAC ($)', data=data, palette='viridis')
 plt.title("Customer Acquisition Cost by Channel")
@@ -56,14 +42,10 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
 
-# Pie chart: Spend distribution per channel
 plt.figure(figsize=(6,6))
 plt.pie(data['Spend ($)'], labels=data['Channel'], autopct='%1.1f%%', startangle=140, colors=sns.color_palette('viridis', len(data)))
 plt.title("Marketing Spend Distribution")
 plt.show()
 
-# -----------------------------
-# Step 4: Export Results
-# -----------------------------
 data.to_excel("CAC_Analysis_Output.xlsx", index=False)
 print("\nAnalysis saved as 'CAC_Analysis_Output.xlsx'")
